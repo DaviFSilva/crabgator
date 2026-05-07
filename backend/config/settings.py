@@ -25,8 +25,11 @@ SECRET_KEY = 'django-insecure-^1$t1725$nt$+%ox!f_(x2+0l(@&h2__tjt532&qnor!)n^v2a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["crabgator.com", "www.crabgator.com"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://crabgator.com",
+]
 
 # Application definition
 
