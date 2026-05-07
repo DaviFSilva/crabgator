@@ -34,10 +34,10 @@ restart:
 deploy:
 	git pull
 	$(PIP) install -r $(BACKEND_ROOT)/requirements.txt
-	$(MANAGE) migrate
 	$(MANAGE) collectstatic --noinput
 	docker compose down
 	docker compose up -d --build	
+	docker compose exec web python manage.py migrate
 
 check:
 	$(MANAGE) check
