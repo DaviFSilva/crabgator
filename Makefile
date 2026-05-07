@@ -45,6 +45,9 @@ logs:
 db-logs:
 	$(COMPOSE) logs -f db
 
+frontend-logs:
+	$(COMPOSE) logs -f frontend
+
 backup-db:
 	mkdir -p $(BACKEND_ROOT)/backups
 	$(COMPOSE) exec -T db sh -c 'pg_dump -U "$$POSTGRES_USER" "$$POSTGRES_DB"' > $(BACKEND_ROOT)/backups/crabgator_$$(date +%Y%m%d_%H%M%S).sql
