@@ -1,0 +1,95 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# =========================
+# Django
+# =========================
+db.sqlite3
+db.sqlite3-journal
+
+# Django stuff
+*.log
+local_settings.py
+media/
+staticfiles/
+
+# Secret/config files
+.env
+.env.*
+!.env.example
+
+# =========================
+# Migrations
+# =========================
+*/migrations/*
+!*/migrations/__init__.py
+
+# =========================
+# IDEs / Editors
+# =========================
+.vscode/
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Testing / coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache/
+
+# =========================
+# Node (future frontend)
+# =========================
+node_modules/
+
+# =========================
+# Build artifacts
+# =========================
+dist/
+build/
+
+# =========================
+# Docker
+# =========================
+*.pid
+
+# =========================
+# Nginx / Gunicorn sockets
+# =========================
+*.sock
+
+# =========================
+# Certbot / SSL backups
+# =========================
+letsencrypt/
+
+# =========================
+# Flutter (future)
+# =========================
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+.packages
+.pub/
+build/
