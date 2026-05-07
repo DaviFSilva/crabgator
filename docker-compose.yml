@@ -1,9 +1,26 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: crabgator-db
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     build:
       context: ./backend
     container_name: crabgator-web
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     env_file:
       - ./backend/.env
     ports:
@@ -11,3 +28,6 @@ services:
     volumes:
       - ./backend:/app
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+
+volumes:
+  postgres_data:
