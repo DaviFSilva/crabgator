@@ -36,7 +36,8 @@ deploy:
 	$(PIP) install -r $(BACKEND_ROOT)/requirements.txt
 	$(MANAGE) migrate
 	$(MANAGE) collectstatic --noinput
-	sudo systemctl restart gunicorn
+	docker compose down
+	docker compose up -d --build	
 
 check:
 	$(MANAGE) check
