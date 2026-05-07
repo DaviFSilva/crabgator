@@ -1,0 +1,15 @@
+[Unit]
+Description=Gunicorn Django Service
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/apps/backend
+ExecStart=/home/ubuntu/apps/backend/.venv/bin/gunicorn config.wsgi:application --bind 127.0.0.1:8000
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
