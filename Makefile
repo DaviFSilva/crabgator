@@ -1,46 +1,50 @@
 BACKEND_ROOT=backend
+COMPOSE=docker compose
 
-VENV=$(BACKEND_ROOT)/.venv
-PYTHON=$(VENV)/bin/python
-PIP=$(VENV)/bin/pip
-GUNICORN=$(VENV)/bin/gunicorn
-MANAGE=$(PYTHON) $(BACKEND_ROOT)/manage.py
+DOCKER_MANAGE=$(COMPOSE) exec web python manage.py
 
 run:
-	$(MANAGE) runserver 0.0.0.0:8000
+	$(COMPOSE) up
 
 migrate:
-	$(MANAGE) migrate
+	$(DOCKER_MANAGE) migrate
 
 makemigrations:
-	$(MANAGE) makemigrations
+	$(DOCKER_MANAGE) makemigrations
 
 static:
-	$(MANAGE) collectstatic --noinput
+	$(DOCKER_MANAGE) collectstatic --noinput
 
 requirements:
-	$(PIP) freeze > $(BACKEND_ROOT)/requirements.txt
+	$(COMPOSE) exec web pip freeze > $(BACKEND_ROOT)/requirements.txt
 
 install:
-	$(PIP) install -r $(BACKEND_ROOT)/requirements.txt
+	$(COMPOSE) build web
 
 gunicorn:
-	cd $(BACKEND_ROOT) && $(GUNICORN) config.wsgi:application --bind 127.0.0.1:8000
+	$(COMPOSE) exec web gunicorn config.wsgi:application --bind 0.0.0.0:8000
 
 restart:
-	sudo systemctl restart gunicorn
-	sudo systemctl restart nginx
+	$(COMPOSE) restart
 
 deploy:
 	git pull
-	$(PIP) install -r $(BACKEND_ROOT)/requirements.txt
-	$(MANAGE) collectstatic --noinput
-	docker compose down
-	docker compose up -d --build	
-	docker compose exec web python manage.py migrate
+	$(COMPOSE) up -d --build
+	$(DOCKER_MANAGE) migrate
+	$(DOCKER_MANAGE) collectstatic --noinput
 
 check:
-	$(MANAGE) check
+	$(DOCKER_MANAGE) check
 
 shell:
-	$(MANAGE) shell
+	$(DOCKER_MANAGE) shell
+
+logs:
+	$(COMPOSE) logs -f web
+
+db-logs:
+	$(COMPOSE) logs -f db
+
+backup-db:
+	mkdir -p $(BACKEND_ROOT)/backups
+	$(COMPOSE) exec -T db sh -c 'pg_dump -U "$$POSTGRES_USER" "$$POSTGRES_DB"' > $(BACKEND_ROOT)/backups/crabgator_$$(date +%Y%m%d_%H%M%S).sql

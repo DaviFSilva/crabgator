@@ -21,6 +21,12 @@ db.sqlite3-journal
 local_settings.py
 media/
 staticfiles/
+logs/*.log
+backups/
+backend/data/
+backend/backups/
+backend/logs/*.log
+!backend/logs/.gitkeep
 
 # Secret/config files
 .env
