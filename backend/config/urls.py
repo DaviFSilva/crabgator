@@ -20,6 +20,6 @@ from core.views import home, health
 
 urlpatterns = [
     path("", home),
-    path("api/helth/", health),
+    path("api/health/", health),
     path("admin/", admin.site.urls),
 ]
